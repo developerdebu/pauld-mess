@@ -1,0 +1,5 @@
+name: 'Mess inventory'
+type: module
+description: 'Pauld Mess.'
+package: Custom
+core_version_requirement: ^10 || ^11

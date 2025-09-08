@@ -1,0 +1,64 @@
+################################################################################
+# OS / Editor
+################################################################################
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.idea/
+.vscode/
+
+################################################################################
+# Composer
+################################################################################
+/vendor/
+/composer.lock
+
+################################################################################
+# Drupal core & contrib (managed by Composer)
+################################################################################
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+################################################################################
+# Drupal generated files
+################################################################################
+/web/sites/*/files/
+/web/sites/*/private/
+/web/sites/*/services.yml
+/web/sites/*/settings.local.php
+
+# Cache / temporary
+/web/sites/*/files/php/twig/
+/web/sites/*/files/styles/
+/web/sites/*/files/js/
+/web/sites/*/files/css/
+
+################################################################################
+# Config sync (keep if using config export)
+################################################################################
+# Uncomment if you want to ignore config sync
+# /config/sync/
+
+################################################################################
+# Node / Frontend build
+################################################################################
+/node_modules/
+/web/themes/*/node_modules/
+/web/themes/*/dist/
+/web/themes/*/.cache/
+
+################################################################################
+# DDEV (keep config.yaml, ignore generated)
+################################################################################
+.ddev/.importdb/
+/.ddev/.downloads/
+/.ddev/.global_commands/
+/.ddev/homeadditions/
+/.ddev/.webimageBuild/
+/.ddev/.dbimageBuild/
+/.ddev/ssh-auth-knownhosts
+.ddev/.ssh-agent_socket

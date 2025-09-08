@@ -1,0 +1,7 @@
+mess_inventory.add_new_memeber:
+  path: '/mess-inventory/add-new-memeber'
+  defaults:
+    _title: 'Add New Memeber'
+    _form: 'Drupal\mess_inventory\Form\AddNewMemeber'
+  requirements:
+    _permission: 'access content'
