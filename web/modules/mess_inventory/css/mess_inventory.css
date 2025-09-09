@@ -1,0 +1,40 @@
+/* Make all fields the same width */
+.custom-input {
+  width: 100%;
+  max-width: 500px; /* adjust if needed */
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .custom-input {
+    max-width: 100%;
+  }
+}
+
+/* Override Olivero forcing width:auto */
+@media (min-width: 31.25rem) {
+  [type="color"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="email"],
+  [type="file"],
+  [type="month"],
+  [type="number"],
+  [type="password"],
+  [type="search"],
+  [type="tel"],
+  [type="text"],
+  [type="time"],
+  [type="url"],
+  [type="week"],
+  textarea {
+    width: 100% !important;  /* ✅ override */
+    max-width: 500px;        /* keep consistent size for all fields */
+    box-sizing: border-box;
+  }
+}

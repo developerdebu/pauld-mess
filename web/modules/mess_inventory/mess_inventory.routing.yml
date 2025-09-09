@@ -5,3 +5,21 @@ mess_inventory.add_new_memeber:
     _form: 'Drupal\mess_inventory\Form\AddNewMemeber'
   requirements:
     _permission: 'access content'
+
+mess_inventory.list:
+  path: '/mess-inventory/list'
+  defaults:
+    _controller: '\Drupal\mess_inventory\Controller\InventoryController::list'
+    _title: 'Inventory List'
+  requirements:
+    _permission: 'access content'
+
+mess_inventory.edit:
+  path: '/mess-inventory/{id}/edit'
+  defaults:
+    _form: '\Drupal\mess_inventory\Form\InventoryEditForm'
+    _title: 'Edit Entry'
+  requirements:
+    _permission: 'access content'
+    id: \d+
+
