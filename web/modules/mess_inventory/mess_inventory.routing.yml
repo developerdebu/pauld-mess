@@ -14,11 +14,11 @@ mess_inventory.list:
   requirements:
     _permission: 'access content'
 
-mess_inventory.edit:
+mess_inventory.edit_member:
   path: '/mess-inventory/{id}/edit'
   defaults:
-    _form: '\Drupal\mess_inventory\Form\InventoryEditForm'
-    _title: 'Edit Entry'
+    _form: '\Drupal\mess_inventory\Form\EditMemberForm'
+    _title: 'Edit Member'
   requirements:
     _permission: 'access content'
     id: \d+

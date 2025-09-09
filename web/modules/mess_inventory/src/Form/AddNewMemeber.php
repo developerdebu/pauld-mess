@@ -1,134 +1,101 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Drupal\mess_inventory\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Provides a Mess inventory form.
- */
-final class AddNewMemeber extends FormBase {
+class EditMemberForm extends FormBase {
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getFormId(): string {
-    return 'mess_inventory_add_new_memeber';
+  protected $database;
+
+  public function __construct(Connection $database) {
+    $this->database = $database;
+  }
+
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database')
+    );
+  }
+
+  public function getFormId() {
+    return 'mess_inventory_edit_member_form';
   }
 
   /**
-   * {@inheritdoc}
+   * Build the edit form.
    */
-  public function buildForm(array $form, FormStateInterface $form_state): array {
+  public function buildForm(array $form, FormStateInterface $form_state, $id = NULL) {
+    // Fetch record by ID.
+    $record = $this->database->select('mess_inventory', 'm')
+      ->fields('m')
+      ->condition('id', $id)
+      ->execute()
+      ->fetchObject();
 
-    $form['#attached']['library'][] = 'mess_inventory/mess_inventory_styles';
+    if (!$record) {
+      $form['message'] = [
+        '#markup' => $this->t('Record not found.'),
+      ];
+      return $form;
+    }
+
+    // Hidden ID field.
+    $form['id'] = [
+      '#type' => 'hidden',
+      '#value' => $record->id,
+    ];
 
     $form['name'] = [
       '#type' => 'textfield',
-      /* '#title' => $this->t('Please enter your name'), */
+      '#title' => $this->t('Name'),
+      '#default_value' => $record->name,
       '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your name'),
-        'class' => ['custom-input'],
-        ],
+      '#attributes' => ['class' => ['form-control']],
+    ];
+
+    $form['message'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Message'),
+      '#default_value' => $record->message,
+      '#attributes' => ['class' => ['form-control']],
     ];
 
     $form['age'] = [
       '#type' => 'number',
-      '#title' => $this->t('Your Age'),
-      '#description' => $this->t('Please enter your age'),
+      '#title' => $this->t('Age'),
+      '#default_value' => $record->age,
       '#required' => TRUE,
-      '#min' => 1,
-      '#max' => 35,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your age'),
-        'class' => ['custom-input'],
-        ],
+      '#attributes' => ['class' => ['form-control']],
     ];
 
-    $form['phone'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Contact No.'),
-      /* '#description' => $this->t('Please enter your contact No'), */
-      '#required' => TRUE,
-      '#min' => 0000000000,
-      '#max' => 9999999999,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your contact No'),
-        'class' => ['custom-input'],
-        ],
-    ];
-
-    $form['parent_name'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Please enter your parent name'),
-      '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your parent name'),
-        'class' => ['custom-input'],
-        ],
-    ];
-
-    $form['parent_phone'] = [
-      '#type' => 'number',
-      '#title' => $this->t('Parent Contact No.'),
-      /* '#description' => $this->t('Please enter your parent contact No'), */
-      '#required' => TRUE,
-      '#min' => 0000000000,
-      '#max' => 9999999999,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your parent contact No'),
-        'class' => ['custom-input'],
-        ],
-    ];
-
-    $form['address'] = [
-      '#type' => 'textarea',
-      /* '#title' => $this->t('Please enter your address'), */
-      '#required' => TRUE,
-      '#attributes' => [
-        'placeholder' => $this->t('Please enter your address'),
-        'class' => ['custom-input'],
-        ],
-    ];
-
-    $form['actions'] = [
-      '#type' => 'actions',
-      'submit' => [
-        '#type' => 'submit',
-        '#value' => $this->t('Add Member'),
-      ],
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => $this->t('Update'),
+      '#attributes' => ['class' => ['btn', 'btn-primary', 'mt-3']],
     ];
 
     return $form;
   }
 
   /**
-   * {@inheritdoc}
+   * Submit handler.
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    $age = $form_state->getValue('age');
+  public function submitForm(array &$form, FormStateInterface $form_state) {
+    $this->database->update('mess_inventory')
+      ->fields([
+        'name' => $form_state->getValue('name'),
+        'message' => $form_state->getValue('message'),
+        'age' => $form_state->getValue('age'),
+      ])
+      ->condition('id', $form_state->getValue('id'))
+      ->execute();
 
-    if ($age > 35) {
-      $form_state->setErrorByName('age', $this->t('Age must not be greater than 35.'));
-    }
-    elseif ($age < 1) {
-      $form_state->setErrorByName('age', $this->t('Age must be at least 1.'));
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state): void {
-  /*   $this->messenger()->addStatus($this->t('The message has been sent.'));
-    $form_state->setRedirect('<front>'); */
-
-
-
+    \Drupal::messenger()->addMessage($this->t('Member updated successfully.'));
+    $form_state->setRedirect('mess_inventory.list');
   }
 
 }
