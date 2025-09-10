@@ -19,17 +19,20 @@ class InventoryController extends ControllerBase {
 
     $rows = [];
     $results = \Drupal::database()->select('mess_inventory', 'm')
-      ->fields('m', ['id', 'name', 'message', 'age'])
+      ->fields('m', ['id', 'name', 'age', 'contact_no', 'parent_name', 'parent_contact_no', 'address'])
       ->execute()
       ->fetchAll();
 
     foreach ($results as $row) {
-      $edit_url = Url::fromRoute('mess_inventory.edit', ['id' => $row->id]);
+      $edit_url = Url::fromRoute('mess_inventory.edit_member', ['id' => $row->id]);
       $rows[] = [
         $row->id,
         $row->name,
-        $row->message,
         $row->age,
+        $row->contact_no,
+        $row->parent_name,
+        $row->parent_contact_no,
+        $row->address,
         Link::fromTextAndUrl('Edit', $edit_url)->toString(),
       ];
     }

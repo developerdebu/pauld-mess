@@ -1,5 +1,5 @@
 mess_inventory.add_new_memeber:
-  path: '/mess-inventory/add-new-memeber'
+  path: '/mess-inventory/add-memeber'
   defaults:
     _title: 'Add New Memeber'
     _form: 'Drupal\mess_inventory\Form\AddNewMemeber'
@@ -15,7 +15,7 @@ mess_inventory.list:
     _permission: 'access content'
 
 mess_inventory.edit_member:
-  path: '/mess-inventory/{id}/edit'
+  path: '/mess-inventory/edit-memeber/{id}/edit'
   defaults:
     _form: '\Drupal\mess_inventory\Form\EditMemberForm'
     _title: 'Edit Member'
