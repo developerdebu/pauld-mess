@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * @file
+ * Install file for mess_inventory module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function mess_inventory_schema() {
+  $schema['mess_inventory'] = [
+    'description' => 'Stores student details.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'age' => [
+        'type' => 'int',
+        'size' => 'normal',
+        'not null' => TRUE,
+      ],
+      'contact_no' => [
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+      ],
+      'parent_name' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+      ],
+      'parent_contact_no' => [
+        'type' => 'varchar',
+        'length' => 20,
+        'not null' => TRUE,
+      ],
+      'address' => [
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => FALSE,
+      ],
+    ],
+    'primary key' => ['id'],
+  ];
+
+  return $schema;
+}

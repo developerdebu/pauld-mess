@@ -7,6 +7,9 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Database\Connection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class EditMemberForm extends FormBase {
 
   protected $database;
@@ -15,12 +18,18 @@ class EditMemberForm extends FormBase {
     $this->database = $database;
   }
 
+  /**
+   *
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('database')
     );
   }
 
+  /**
+   *
+   */
   public function getFormId() {
     return 'mess_inventory_edit_member_form';
   }

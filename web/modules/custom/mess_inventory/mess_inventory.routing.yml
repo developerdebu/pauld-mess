@@ -22,4 +22,3 @@ mess_inventory.edit_member:
   requirements:
     _permission: 'access content'
     id: \d+
-

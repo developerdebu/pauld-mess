@@ -11,6 +11,9 @@ use Drupal\Core\Url;
  */
 class InventoryController extends ControllerBase {
 
+  /**
+   *
+   */
   public function list() {
     $header = ['ID', 'Name', 'Message', 'Age', 'Actions'];
 
