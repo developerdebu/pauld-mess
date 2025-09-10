@@ -1,0 +1,47 @@
+<div class="container my-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">{{ 'Members List'|t }}</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-striped table-hover mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th scope="col">{{ 'ID'|t }}</th>
+            <th scope="col">{{ 'Name'|t }}</th>
+            <th scope="col">{{ 'Message'|t }}</th>
+            <th scope="col">{{ 'Age'|t }}</th>
+            <th scope="col">{{ 'Actions'|t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for member in members %}
+            <tr>
+            <td>{{ member.id }}</td>
+            <td>{{ member.name }}</td>
+            <td>{{ member.age }}</td>
+            <td>{{ member.contact_no }}</td>
+            <td>
+              <a href="{{ path('mess_inventory.edit_member', {'id': member.id}) }}" class="btn btn-sm btn-warning me-1">
+                {{ 'Edit'|t }}
+              </a>
+              <a href="{# {{ path('mess_inventory.delete_member', {'id': member.id}) }} #}" class="btn btn-sm btn-danger">
+                {{ 'Delete'|t }}
+              </a>
+            </td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="5" class="text-center py-3">{{ 'No members found.'|t }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">
+      <nav aria-label="Page navigation">
+        {{ pager }}
+      </nav>
+    </div>
+  </div>
+</div>

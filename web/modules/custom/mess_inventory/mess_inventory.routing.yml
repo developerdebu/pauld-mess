@@ -14,6 +14,14 @@ mess_inventory.list:
   requirements:
     _permission: 'access content'
 
+mess_inventory.list_without_template:
+  path: '/mess-inventory/list-template'
+  defaults:
+    _controller: '\Drupal\mess_inventory\Controller\InventoryControllerTemp::list'
+    _title: 'Inventory List'
+  requirements:
+    _permission: 'access content'
+
 mess_inventory.edit_member:
   path: '/mess-inventory/edit-memeber/{id}/edit'
   defaults:

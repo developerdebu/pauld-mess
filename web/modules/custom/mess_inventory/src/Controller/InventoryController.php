@@ -3,46 +3,62 @@
 namespace Drupal\mess_inventory\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
+use Drupal\Core\Database\Connection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-/**
- * Controller for inventory listing.
- */
 class InventoryController extends ControllerBase {
 
-  /**
-   *
-   */
-  public function list() {
-    $header = ['ID', 'Name', 'Message', 'Age', 'Actions'];
+  protected $database;
 
-    $rows = [];
-    $results = \Drupal::database()->select('mess_inventory', 'm')
-      ->fields('m', ['id', 'name', 'age', 'contact_no', 'parent_name', 'parent_contact_no', 'address'])
-      ->execute()
-      ->fetchAll();
-
-    foreach ($results as $row) {
-      $edit_url = Url::fromRoute('mess_inventory.edit_member', ['id' => $row->id]);
-      $rows[] = [
-        $row->id,
-        $row->name,
-        $row->age,
-        $row->contact_no,
-        $row->parent_name,
-        $row->parent_contact_no,
-        $row->address,
-        Link::fromTextAndUrl('Edit', $edit_url)->toString(),
-      ];
-    }
-
-    return [
-      '#type' => 'table',
-      '#header' => $header,
-      '#rows' => $rows,
-      '#empty' => $this->t('No entries found.'),
-    ];
+  public function __construct(Connection $database) {
+    $this->database = $database;
   }
 
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('database')
+    );
+  }
+
+  /* public function list() {
+    $limit = 2; // Number of items per page
+
+    // Query with pager.
+    $query = $this->database->select('mess_inventory', 'm')
+      ->fields('m')
+      ->extend('Drupal\Core\Database\Query\PagerSelectExtender')
+      ->limit($limit);
+
+    $results = $query->execute()->fetchAll();
+
+    return [
+      '#theme' => 'mess_inventory_list',
+      '#members' => $results,
+      '#pager' => [
+        '#type' => 'pager',
+      ],
+      '#cache' => ['max-age' => 0], // Don’t cache while testing
+    ];
+  } */
+
+  public function list() {
+    $limit = 5; // number of rows per page
+
+    // Use PagerSelectExtender
+    $query = $this->database->select('mess_inventory', 'm')
+      ->fields('m')
+      ->extend('Drupal\Core\Database\Query\PagerSelectExtender')
+      ->limit($limit);
+
+    $results = $query->execute()->fetchAll();
+
+    return [
+      '#theme' => 'mess_inventory_list',
+      '#members' => $results,
+      '#pager' => [
+        '#type' => 'pager',
+      ],
+      '#cache' => ['max-age' => 0],
+    ];
+  }
 }

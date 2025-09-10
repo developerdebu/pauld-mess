@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function mess_inventory_theme($existing, $type, $theme, $path) {
+  return [
+    'mess_inventory_list' => [
+      'variables' => ['members' => NULL],
+      'template' => 'mess-inventory-list',
+    ],
+  ];
+}
